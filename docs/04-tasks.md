@@ -47,7 +47,7 @@
 
 ---
 
-## Phase 3 — 프론트엔드
+## Phase 3 — 프론트엔드 `✅ 완료`
 
 > Vanilla JS + Tailwind CDN으로 메인 화면 구현 및 API 연결
 
