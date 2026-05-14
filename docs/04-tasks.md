@@ -28,7 +28,7 @@
 
 ---
 
-## Phase 2 — 백엔드
+## Phase 2 — 백엔드 `✅ 완료`
 
 > FastAPI로 Task CRUD API 5개 구현 및 Swagger 동작 확인
 
