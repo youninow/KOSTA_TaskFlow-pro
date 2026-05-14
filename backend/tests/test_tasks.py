@@ -88,6 +88,24 @@ def test_update_task_partial(client):
     assert data["title"] == "원래 제목"  # 기존 값 유지 확인
 
 
+def test_update_task_blank_title_400(client):
+    created = client.post("/api/tasks", json={"title": "원래 제목"}).json()
+    response = client.put(f"/api/tasks/{created['id']}", json={"title": "   "})
+    assert response.status_code == 422
+
+
+def test_update_task_title_too_long_400(client):
+    created = client.post("/api/tasks", json={"title": "원래 제목"}).json()
+    response = client.put(f"/api/tasks/{created['id']}", json={"title": "a" * 201})
+    assert response.status_code == 422
+
+
+def test_update_task_invalid_status_400(client):
+    created = client.post("/api/tasks", json={"title": "원래 제목"}).json()
+    response = client.put(f"/api/tasks/{created['id']}", json={"status": "invalid"})
+    assert response.status_code == 422
+
+
 def test_update_task_not_found_404(client):
     response = client.put("/api/tasks/9999", json={"status": "done"})
     assert response.status_code == 404
