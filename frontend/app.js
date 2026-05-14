@@ -63,6 +63,20 @@ async function deleteTask(id) {
 }
 
 // ─── 날짜 유틸 ───────────────────────────────────────────────────────────────
+
+// day.js 초기화 (최초 1회)
+dayjs.extend(dayjs_plugin_relativeTime);
+dayjs.locale('ko');
+
+// created_at → 24시간 이내: 상대 시간("3시간 전"), 이후: 절대 날짜("5월 14일 09:30")
+function formatCreatedAt(isoStr) {
+  const d = dayjs(isoStr);
+  const diffHours = dayjs().diff(d, 'hour');
+  return diffHours < 24
+    ? d.fromNow()
+    : d.format('M월 D일 HH:mm');
+}
+
 function formatDueAt(dueAtStr) {
   if (!dueAtStr) return null;
   const due = new Date(dueAtStr);
@@ -147,7 +161,10 @@ function renderCard(task) {
         class="text-sm font-medium text-gray-900 dark:text-white leading-snug cursor-pointer hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
         onclick="openEditModal(${task.id})"
       >${escapeHtml(task.title)}</p>
-      ${dueHtml}
+      <div class="flex items-center justify-between">
+        ${dueHtml}
+        <span class="text-xs text-gray-400 dark:text-gray-600 ml-auto">${formatCreatedAt(task.created_at)}</span>
+      </div>
     </div>
   `;
 }
